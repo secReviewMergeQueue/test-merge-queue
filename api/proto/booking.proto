@@ -1,0 +1,120 @@
+syntax = "proto3";
+
+option go_package = "github.com/saumeya/train-ticketing/api/proto";
+
+// Ticket Booking Service 
+
+package booking;
+
+service BookingService {
+  rpc BookTicket(BookingRequest) returns (BookingResponse) {}
+  rpc ShowReceipt(ShowReceiptRequest) returns (ShowReceiptResponse) {}
+  rpc RemoveUser(RemoveUserRequest) returns (RemoveUserResponse) {}
+  rpc ModifyUserSeat(ModifyUserSeatRequest) returns (ModifyUserSeatResponse) {}
+  rpc ViewSeatsBySection(ViewSeatsBySectionRequest) returns (ViewSeatsBySectionResponse) {} 
+  rpc ViewTrainChart(ViewTrainChartRequest) returns (ViewTrainChartResponse) {}
+}
+
+// User contains the user details
+message User {
+    string first_name = 1;
+    string last_name = 2;
+    string email = 3;
+}
+
+// Train User Chart By Section
+message UserSeatSection {
+    User user = 1;
+    string seat_number = 2;
+}
+
+// BookingRequest holds the parameters needed to book a ticket
+message BookingRequest {
+    string from = 1;
+    string to = 2;
+    User user = 4;
+}
+
+// Booking Response contains the booking response
+message BookingResponse {
+    string booking_id = 1;
+    string from = 2;
+    string to = 3;
+    User user = 4;
+    double price_paid = 5;
+    string seat_number = 6;
+}
+
+// Show Receipt Requset holds the params for showing receipt of the ticket
+message ShowReceiptRequest{
+    string booking_id = 1;
+    User user = 2;
+}
+
+// Show Receipt Response contains the receiplt response
+message ShowReceiptResponse{
+    string booking_id = 1;
+    string from = 2;
+    string to = 3;
+    User user = 4;
+    double price_paid = 5;
+    string seat_number = 6;
+}
+
+// Remove user request contains the parameters needed to cancel a ticket
+message RemoveUserRequest{
+    string booking_id = 1;
+    User user = 2;
+
+}
+
+// Remove User Response is the response for cancelling a ticket
+message RemoveUserResponse{
+    string booking_id = 1;
+    string seat_number = 2;
+}
+
+// Modify User Seat Request contains parameters to modify seat
+message ModifyUserSeatRequest{
+    string booking_id = 1;
+    User user = 2;
+    string requested_seat = 3;
+}
+
+// Modify User Seat Response contains the response for modifying a ticket
+message ModifyUserSeatResponse{
+    string booking_id = 1;
+    string seat_number = 2;
+    string request_seat = 3;
+}
+
+// View Seat by Section Request contains the parameters for viewing train seats
+message ViewSeatsBySectionRequest {
+    string from = 1;
+    string to = 2;
+    string train_section = 3;
+
+}
+
+// View Seat by Section Response shows the train seats
+message ViewSeatsBySectionResponse {
+    string train_id = 1;
+    string from = 2;
+    string to = 3;
+    string train_section = 4;
+    repeated UserSeatSection seats = 5;
+}
+
+// View Train Chart for a particular Train Route
+message ViewTrainChartRequest {
+    string from = 1;
+    string to = 2;
+}
+
+// View Train Chart for a particular Train Route
+message ViewTrainChartResponse {
+    string train_id = 1;
+    string from = 2;
+    string to = 3;
+    string response = 4;
+}
